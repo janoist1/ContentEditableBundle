@@ -1,5 +1,5 @@
 // content editable bundle
-;(function(window, $, undefined){
+;(function(window, $, aloha, undefined){
 
     var contentEditable = window.contentEditable || {};
     window.contentEditable = contentEditable;
@@ -55,4 +55,4 @@
             }
         });
     }
-})(window, jQuery);
+})(window, jQuery, aloha);

@@ -1,0 +1,6 @@
+.content-editable {
+}
+.content-editable.hover,
+.content-editable.editing {
+    background-color: #E0B0B0;
+}

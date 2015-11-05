@@ -1,0 +1,11 @@
+services:
+    ist1.twig.content_editable:
+        class: Ist1\ContentEditableBundle\Twig\ContentEditableExtension
+        arguments: [ '%ist1_content_editable%' ]
+        public: false
+        tags:
+            - { name: twig.extension }
+
+    ist1.content_editable.service:
+        class: Ist1\ContentEditableBundle\Service\ContentEditableService
+        arguments: [ '@doctrine.orm.entity_manager', '%ist1_content_editable%' ]

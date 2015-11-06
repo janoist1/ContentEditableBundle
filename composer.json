@@ -1,0 +1,24 @@
+{
+    "name": "ist1/content-editable-bundle",
+    "type": "library",
+    "description": "WYSIWYG editor bundle for Symfony - works well with ContentBundle",
+    "keywords": ["symfony2", "aloha", "wysiwyg"],
+    "homepage": "https://github.com/janoist1/ContentEditableBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Istvan Jano",
+            "email": "janoist1@gmail.com",
+            "homepage": "http://janoist1.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ist1\\ContentEditableBundle\\": ""
+        }
+    }
+}

@@ -14,7 +14,10 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0"
+        "symfony/yaml": "*",
+        "symfony/class-loader": "*",
+        "doctrine/orm": "^2.4",
+        "jms/translation-bundle": "^1.1"
     },
     "autoload": {
         "psr-4": {

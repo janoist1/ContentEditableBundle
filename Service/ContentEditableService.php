@@ -2,8 +2,9 @@
 
 namespace Ist1\ContentEditableBundle\Service;
 
-
 use Doctrine\ORM\EntityManagerInterface;
+use Ist1\ContentEditableBundle\Exception\ContentEditableException;
+
 
 class ContentEditableService
 {
@@ -28,19 +29,19 @@ class ContentEditableService
      * @param $objectId
      * @param $value
      * @param null|string $dataField
-     * @throws \Exception
+     * @throws ContentEditableException
      */
     public function updateEntity($configKey, $objectId, $value, $dataField = null)
     {
         if (!array_key_exists($configKey, $this->configuration['configurations'])) {
-            throw new \Exception('Missing configuration "' . $configKey . '"');
+            throw new ContentEditableException('Missing configuration "' . $configKey . '"');
         }
 
         $config = $this->configuration['configurations'][$configKey];
 
         if ($dataField == null) {
             if (!array_key_exists('data_field', $config)) {
-                throw new \Exception('Missing data_field');
+                throw new ContentEditableException('Missing data_field');
             }
 
             $dataField = $config['data_field'];
@@ -58,7 +59,7 @@ class ContentEditableService
         $setter = 'set' . ucfirst($dataField);
 
         if (!method_exists($entity, $setter)) {
-            throw new \Exception('No setter "' . $setter . '" found for "' . get_class($entity) . '"');
+            throw new ContentEditableException('No setter "' . $setter . '" found for "' . get_class($entity) . '"');
         }
 
         $entity->$setter(trim($value));

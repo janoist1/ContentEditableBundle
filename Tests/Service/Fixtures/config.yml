@@ -1,0 +1,4 @@
+ist1_content_editable:
+    configurations:
+        blog:
+            repository_class: AcmeSampleBundle:Blog

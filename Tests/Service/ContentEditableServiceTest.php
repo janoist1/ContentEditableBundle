@@ -106,6 +106,49 @@ class ContentEditableServiceTest extends TestCase
     }
 
     /**
+     * Test update of a regular every day normal entity - missing configuration
+     */
+    public function testUpdateEntityBlogNoSetterFound()
+    {
+        $id = 1;
+        $config = 'blog';
+        $dataField = 'content';
+        $newValue = 'new value';
+        $configs = $this->loadConfigurations();
+        $setter = 'set' . ucfirst($dataField);
+
+        $mockBlogEntity = $this->getMockBuilder('Acme\BlogBundle\Entity\Blog')
+            ->getMock();
+        $mockBlogEntity->expects($this->exactly(0))
+            ->method($setter);
+
+        $mockRepository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mockRepository->expects($this->once())
+            ->method('findOneBy')
+            ->with(['id' => $id])
+            ->will($this->returnValue($mockBlogEntity));
+
+        $mockEntityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mockEntityManager->expects($this->once())
+            ->method('getRepository')
+            ->with($configs['configurations'][$config]['repository_class'])
+            ->will($this->returnValue($mockRepository));
+
+        $service = new ContentEditableService($mockEntityManager, $configs);
+
+        try {
+            $service->updateEntity($config, $id, $newValue, $dataField);
+            $this->fail('No Exception was thrown');
+        } catch (ContentEditableException $e) {
+            $this->assertEquals('No setter "' . $setter . '" found for "' . get_class($mockBlogEntity) . '"', $e->getMessage());
+        }
+    }
+
+    /**
      * @return array
      */
     private function loadConfigurations()

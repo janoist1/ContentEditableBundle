@@ -3,6 +3,7 @@
 namespace Ist1\ContentEditableBundle\Tests\Builder;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Ist1\ContentEditableBundle\Exception\ContentEditableException;
 use Symfony\Component\Yaml\Parser;
 use Ist1\ContentEditableBundle\Service\ContentEditableService;
 use Ist1\ContentEditableBundle\Tests\TestCase;
@@ -54,6 +55,30 @@ class ContentEditableServiceTest extends TestCase
         $service = new ContentEditableService($mockEntityManager, $configs);
 
         $service->updateEntity($config, $id, $newValue, $dataField);
+    }
+
+    /**
+     * Test update of a regular every day normal entity - no data field given
+     */
+    public function testUpdateEntityBlogNoDataField()
+    {
+        $id = 1;
+        $config = 'blog';
+        $newValue = 'new value';
+        $configs = $this->loadConfigurations();
+
+        $mockEntityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $service = new ContentEditableService($mockEntityManager, $configs);
+
+        try {
+            $service->updateEntity($config, $id, $newValue);
+            $this->fail('No Exception was thrown');
+        } catch (ContentEditableException $e) {
+            $this->assertEquals('Missing data_field', $e->getMessage());
+        }
     }
 
     /**

@@ -82,6 +82,30 @@ class ContentEditableServiceTest extends TestCase
     }
 
     /**
+     * Test update of a regular every day normal entity - missing configuration
+     */
+    public function testUpdateEntityBlogMissingConfiguration()
+    {
+        $id = 1;
+        $config = 'blog';
+        $newValue = 'new value';
+        $configs = ['configurations' => []];
+
+        $mockEntityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $service = new ContentEditableService($mockEntityManager, $configs);
+
+        try {
+            $service->updateEntity($config, $id, $newValue);
+            $this->fail('No Exception was thrown');
+        } catch (ContentEditableException $e) {
+            $this->assertEquals('Missing configuration "' . $config . '"', $e->getMessage());
+        }
+    }
+
+    /**
      * @return array
      */
     private function loadConfigurations()
